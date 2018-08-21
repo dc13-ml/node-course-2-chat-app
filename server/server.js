@@ -22,6 +22,30 @@ app.use(express.static(publicPath));
 io.on('connection', (socket)=> {
     console.log('New user connected');
 
+    // Trigger email event
+    socket.emit('newEmail', {
+        from: 'dennis@sample.com',
+        body: 'this is a testing',
+        createAt: 123
+    });
+
+    // Listen to create email event
+    socket.on('createEmail', (newEmail)=>{
+        console.log('createEmail', newEmail);
+    });
+
+    // Trigger message event
+    socket.emit('newMessage', {
+        from: 'shao@sample.com',
+        text: 'this is a message from server',
+        createAt: 456
+    });
+
+    // Listen to create message event
+    socket.on('createMessage', (newMessage)=>{
+        console.log('createMessage', newMessage);
+    });
+
     // Listen to socket disconnect event
     socket.on('disconnect', ()=>{
         console.log('Disconnect user client');
