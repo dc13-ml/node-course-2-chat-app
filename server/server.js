@@ -23,16 +23,16 @@ io.on('connection', (socket)=> {
     console.log('New user connected');
 
     // Trigger email event
-    socket.emit('newEmail', {
-        from: 'dennis@sample.com',
-        body: 'this is a testing',
-        createAt: 123
-    });
+    // socket.emit('newEmail', {
+    //     from: 'dennis@sample.com',
+    //     body: 'this is a testing',
+    //     createAt: 123
+    // });
 
     // Listen to create email event
-    socket.on('createEmail', (newEmail)=>{
-        console.log('createEmail', newEmail);
-    });
+    // socket.on('createEmail', (newEmail)=>{
+    //     console.log('createEmail', newEmail);
+    // });
 
     // Trigger message event
     // socket.emit('newMessage', {
@@ -41,14 +41,31 @@ io.on('connection', (socket)=> {
     //     createAt: 456
     // });
 
-    // Listen to create message event
+    socket.emit('welcome', {
+        from: 'admin',
+        text: 'Welcome to the chat app!'
+    });
+
+    socket.broadcast.emit('newUser', {
+        from: 'admin',
+        text: 'New user joined',
+        joinedAt: new Date().getTime()
+    });
+
+        // Listen to createMessage event
     socket.on('createMessage', (message)=>{
         console.log('createMessage', message);
+        // broadcast a newMessage when a createMessage arrive.
         io.emit('newMessage', {
             from: message.from,
             text: message.text,
             createdAt: new Date().getTime()
         });
+        // socket.broadcast.emit('newMessage', {
+        //     from: message.from,
+        //     text: message.text,
+        //     createdAt: new Date().getTime()
+        // });
     });
 
     // Listen to socket disconnect event

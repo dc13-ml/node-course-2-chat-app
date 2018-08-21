@@ -5,10 +5,10 @@ var socket = io();
 socket.on('connect', function () {
     console.log('Connected to server');
 
-    socket.emit('createEmail', {
-        to: 'cheng@sample.com',
-        text: 'from client to server'
-    });
+    // socket.emit('createEmail', {
+    //     to: 'cheng@sample.com',
+    //     text: 'from client to server'
+    // });
 
     // socket.emit('createMessage', {
     //     from: 'mimi@sample.com',
@@ -21,10 +21,18 @@ socket.on('disconnect', function () {
     console.log('Disconnect from server');
 });
 
-socket.on('newEmail', function (email) {
-    console.log('New email arrived from server', email);
-});
+// socket.on('newEmail', function (email) {
+//     console.log('New email arrived from server', email);
+// });
 
 socket.on('newMessage', function (message) {
     console.log('New message arrived from server', message);
+});
+
+socket.on('welcome', function (message) {
+    console.log('welcome message', message);
+});
+
+socket.on('newUser', function (message) {
+    console.log('newUser message', message);
 });
