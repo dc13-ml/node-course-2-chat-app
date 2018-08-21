@@ -35,15 +35,20 @@ io.on('connection', (socket)=> {
     });
 
     // Trigger message event
-    socket.emit('newMessage', {
-        from: 'shao@sample.com',
-        text: 'this is a message from server',
-        createAt: 456
-    });
+    // socket.emit('newMessage', {
+    //     from: 'shao@sample.com',
+    //     text: 'this is a message from server',
+    //     createAt: 456
+    // });
 
     // Listen to create message event
-    socket.on('createMessage', (newMessage)=>{
-        console.log('createMessage', newMessage);
+    socket.on('createMessage', (message)=>{
+        console.log('createMessage', message);
+        io.emit('newMessage', {
+            from: message.from,
+            text: message.text,
+            createdAt: new Date().getTime()
+        });
     });
 
     // Listen to socket disconnect event

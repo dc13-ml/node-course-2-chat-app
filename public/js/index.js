@@ -10,10 +10,10 @@ socket.on('connect', function () {
         text: 'from client to server'
     });
 
-    socket.emit('createMessage', {
-        from: 'mimi@sample.com',
-        text: 'from client to server on message created'
-    })
+    // socket.emit('createMessage', {
+    //     from: 'mimi@sample.com',
+    //     text: 'from client to server on message created'
+    // });
 });
 
 // Listen to 'disconnect' event
