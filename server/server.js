@@ -2,7 +2,7 @@ const express = require('express');
 const http = require('http');
 const path = require('path');
 const socketIO = require('socket.io');
-const {generateMessage} = require('./utils/message');
+const {generateMessage, generateLocationMessage} = require('./utils/message');
 
 
 const publicPath = path.join(__dirname, '../public');
@@ -34,6 +34,10 @@ io.on('connection', (socket)=> {
         // broadcast a newMessage when a createMessage arrive.
         io.emit('newMessage', generateMessage(message.from, message.text));
         callback('<Str from server>');
+    });
+
+    socket.on('createLocationMessage', (coord) => {
+        io.emit('newLocationMessage', generateLocationMessage('Admin', coord.latitude, coord.longitude));
     });
 
     // Listen to socket disconnect event
