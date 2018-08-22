@@ -24,39 +24,16 @@ app.use(express.static(publicPath));
 io.on('connection', (socket)=> {
     console.log('New user connected');
 
-    // Trigger email event
-    // socket.emit('newEmail', {
-    //     from: 'dennis@sample.com',
-    //     body: 'this is a testing',
-    //     createAt: 123
-    // });
+    socket.emit('newMessage', generateMessage('Admin', 'Welcome to the chat app!'));
 
-    // Listen to create email event
-    // socket.on('createEmail', (newEmail)=>{
-    //     console.log('createEmail', newEmail);
-    // });
+    socket.broadcast.emit('newMessage', generateMessage('Admin','New user joined'));
 
-    // Trigger message event
-    // socket.emit('newMessage', {
-    //     from: 'shao@sample.com',
-    //     text: 'this is a message from server',
-    //     createAt: 456
-    // });
-
-    socket.emit('welcome', generateMessage('Admin', 'Welcome to the chat app!'));
-
-    socket.broadcast.emit('newUser', generateMessage('Admin','New user joined'));
-
-        // Listen to createMessage event
-    socket.on('createMessage', (message)=>{
+    // Listen to createMessage event
+    socket.on('createMessage', (message,callback)=>{
         console.log('createMessage', message);
         // broadcast a newMessage when a createMessage arrive.
         io.emit('newMessage', generateMessage(message.from, message.text));
-        // socket.broadcast.emit('newMessage', {
-        //     from: message.from,
-        //     text: message.text,
-        //     createdAt: new Date().getTime()
-        // });
+        callback('<Str from server>');
     });
 
     // Listen to socket disconnect event
