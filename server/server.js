@@ -48,14 +48,19 @@ io.on('connection', (socket)=> {
 
     // Listen to createMessage event
     socket.on('createMessage', (message,callback)=>{
-        console.log('createMessage', message);
-        // broadcast a newMessage when a createMessage arrive.
-        io.emit('newMessage', generateMessage(message.from, message.text));
+        var user = users.getUser(socket.id);
+        if (user && isRealString(message.text)) {
+            // broadcast a newMessage when a createMessage arrive.
+            io.to(user.room).emit('newMessage', generateMessage(user.name, message.text));
+        };
         callback();
     });
 
     socket.on('createLocationMessage', (coord) => {
-        io.emit('newLocationMessage', generateLocationMessage('Admin', coord.latitude, coord.longitude));
+        var user = users.getUser(socket.id);
+        if (user) {
+            io.to(user.room).emit('newLocationMessage', generateLocationMessage(user.name, coord.latitude, coord.longitude));
+        }
     });
 
     // Listen to socket disconnect event
