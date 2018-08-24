@@ -1,3 +1,4 @@
+
 // Create a socket connection
 var socket = io();
 
@@ -33,6 +34,17 @@ socket.on('connect', function () {
 // Listen to 'disconnect' event
 socket.on('disconnect', function () {
     console.log('Disconnect from server');
+});
+
+socket.on('updateUserList', function (users) {
+    var ol = jQuery('<ol></ol>');
+
+    users.forEach(function (user) {
+        ol.append(jQuery('<li></li>').text(user));
+    });
+
+    // replace the original list with new list
+    jQuery('#users').html(ol);
 });
 
 socket.on('newMessage', function (message) {
